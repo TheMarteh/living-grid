@@ -3,11 +3,11 @@ public class Location : ITinySprite {
     public Location() {
         Host = null;
     }
-    public char Render() {
+    public char Render_Sprite_Char() {
         if (Host == null) {
             return ' ';
         } else {
-            return Host.Render();
+            return Host.Render_Sprite_Char();
         }
     }
 

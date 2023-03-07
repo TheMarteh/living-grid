@@ -24,11 +24,28 @@ public class World {
                 int randomValue = random.Next(0, 3);
                 if (randomValue == 0) {
                     // add a plant
-                    Cells[y, x].ReceiveEntity(new Plant("Plant"));
+                    var plant = new Plant("Plant");
+                    Cells[y, x].ReceiveEntity(plant);
                 } else if (randomValue == 1) {
                     // add a rock
                     Cells[y, x].ReceiveEntity(new Rock("Rock"));
                 }               
+            }
+        }
+
+        // grow a few random plants
+        for (int i = 0; i < 10; i++) {
+            // get a random location
+            int x = random.Next(0, Width);
+            int y = random.Next(0, Height);
+
+            // get the entity at that location
+            var entity = Cells[y, x].Host;
+
+            // if there is a plant, grow it
+            if (entity is Plant) {
+                var plant = (Plant)entity;
+                plant.Grow();
             }
         }
     }

@@ -15,7 +15,7 @@ public class Renderer
     {
         for (int y = 0; y < World.Height; y++) {
             for (int x = 0; x < World.Width; x++) {
-                Console.Write(World.GetLocation(x, y).Render());
+                Console.Write(World.GetLocation(x, y).Render_Sprite_Char());
             }
             Console.WriteLine();
         }
