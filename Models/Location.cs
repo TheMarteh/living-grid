@@ -13,5 +13,8 @@ public class Location : ITinySprite {
 
     public void ReceiveEntity(Entity entity) {
         Host = entity;
+        // presents an entity to the location
+
+        // TODO: handle occupied logic
     }
 }

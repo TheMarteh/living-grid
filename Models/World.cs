@@ -20,7 +20,7 @@ public class World {
         Random random = new Random();
 
         // grow a few random plants
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             // select a random location
             int x = random.Next(0, Width);
             int y = random.Next(0, Height);
@@ -32,7 +32,7 @@ public class World {
         }
 
         // spawn a few rocks
-        for (int i = 0; i < 10; i++ ) {
+        for (int i = 0; i < 20; i++ ) {
             // get a random location
             int x = random.Next(0, Width);
             int y = random.Next(0, Height);
@@ -41,6 +41,21 @@ public class World {
             // put the rock on
             var rock = new Rock($"stonehenge_{i}");
             location.ReceiveEntity(rock);
+        }
+    }
+
+    public void Update(double dt) {
+        // update the world
+        // dt is the time in milliseconds since the last update
+
+        // For now, pick a random plant and grow it once.
+        Random random = new Random();
+        int x = random.Next(0, Width);
+        int y = random.Next(0, Height);
+        var location = Cells[x, y];
+        if (location.Host != null && location.Host is Plant) {
+            var plant = (Plant)location.Host;
+            plant.Grow();
         }
     }
 
