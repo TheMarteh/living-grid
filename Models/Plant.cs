@@ -26,14 +26,10 @@ public class Plant : Entity {
         // Plants start at 0 height
         this.Height = 0;
 
-        // grow the plant randomly
+        // There is a 1/4 chance to spawn as a sprout
         Random random = new Random();
         int randomValue = random.Next(0, 3);
         if (randomValue == 0) {
-            Grow();
-        }
-        else if (randomValue == 1) {
-            Grow();
             Grow();
         }
     }

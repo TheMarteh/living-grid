@@ -7,7 +7,7 @@ public class Renderer
     {
         Width = width;
         Height = height;
-        World = new World(Height, Width);
+        World = new World(Width, Height);
         World.Populate();
     }
 
