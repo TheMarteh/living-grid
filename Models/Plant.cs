@@ -11,14 +11,23 @@ public class Plant : Entity {
         // The plant grows in the following stages:
         // 0: Seed (.)
         // 1: Sprout (,)
-        // 2: Plant (Ψ)
+        // 2: Seedling (ƫ)
+        // 2: Plant (Ʈ)
 
         if (this.Height == 0) {
             return '.';
-        } else if (this.Height == 1) {
+        } 
+        else if (this.Height == 1) {
             return ',';
-        } else {
-            return 'Ψ';
+        } 
+        else if (this.Height == 2) {
+            return 'ɂ';
+        } 
+        else if (this.Height == 3) {
+            return 'Y';
+        } 
+        else {
+            return 'Ȳ';
         }
     }
 

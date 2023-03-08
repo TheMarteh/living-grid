@@ -22,16 +22,41 @@ public class Renderer
         stopwatch.Start();
         
         // set the console properties
-        Console.SetWindowSize(Width + 20, Height + 4);
-        Console.SetBufferSize(Width + 20, Height + 4);
+        
+        // Console.SetWindowSize(Width + 20, Height + 4);
+        // Console.SetBufferSize(Width + 20, Height + 4);
         Console.CursorVisible = false;
+        int loopStartTime;
+        double timeSinceLastUpdate = 0.01; // delen door nul is nooit goed
+        int loopEndTime = stopwatch.Elapsed.Milliseconds;
+        Thread.Sleep(10);
 
         while (stopwatch.Elapsed.TotalSeconds < 30) {
+            // update the world while passing the time since last update;
+            var tickTimer = new Stopwatch();
+            tickTimer.Start();
+
+            World.Update(timeSinceLastUpdate);
+
             // render the world
             double dt = RenderFrame();
 
+            // calculate how long we need to wait to not go over
+            // the target fps
+            double targetFrameTime = 1000.0 / TargetFps;
+            double timeToWait = dt < targetFrameTime 
+                ? targetFrameTime - dt
+                : 0;
+
+            double frameTime = timeToWait + dt;
+            Console.WriteLine($" fps: {(1000/frameTime)}/{TargetFps}");
+            Console.WriteLine($"Rendered frame in {dt} ms");
+            
             // update the world
-            World.Update(dt);
+            World.Update(frameTime);
+
+            Thread.Sleep((int)timeToWait);
+            timeSinceLastUpdate = (tickTimer.ElapsedMilliseconds / 1000);
         }
     }
 
@@ -54,17 +79,6 @@ public class Renderer
             Console.WriteLine();
         }
 
-        // return the time it took to render the frame
-        dt = stopwatch.Elapsed.TotalMilliseconds;
-        Console.WriteLine($"Rendered frame in {dt} ms");
-        
-        // wait until the next frame
-        double targetFrameTime = 1000.0 / TargetFps;
-        double timeToWait = targetFrameTime - dt;
-        if (timeToWait > 0) {
-            Thread.Sleep((int)timeToWait);
-            return timeToWait + dt;
-        }
-        return dt;
+        return stopwatch.Elapsed.TotalMilliseconds;
     }
 }
