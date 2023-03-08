@@ -51,7 +51,7 @@ public class Renderer
             Console.WriteLine($"Rendered frame in {renderTime} ms");
 
             Thread.Sleep((int)timeToWait);
-            timeSinceLastUpdate = (tickTimer.ElapsedMilliseconds / 1000);
+            timeSinceLastUpdate = (tickTimer.ElapsedMilliseconds * 0.001);
         }
     }
 

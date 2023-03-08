@@ -11,10 +11,17 @@ public class Location : ITinySprite {
         }
     }
 
-    public void ReceiveEntity(Entity entity) {
-        Host = entity;
+    public Location ReceiveEntity(IEntity entity) {
         // presents an entity to the location
-
-        // TODO: handle occupied logic
+        
+        // if the location is empty, the entity is accepted
+        if (Host == null) {
+            Host = entity as Entity;
+        }
+        // if the location is occupied, the entity is rejected
+        return this;
+    }
+    public void RemoveEntity() {
+        Host = null;
     }
 }
