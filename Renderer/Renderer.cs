@@ -30,6 +30,9 @@ public class Renderer
         Thread.Sleep(10);
 
         while (gametimer.Elapsed.TotalSeconds < 30) {
+            // temp
+            Console.WriteLine($"Time (via stopwatch):                  {gametimer.Elapsed.TotalMilliseconds}");
+            
             // update the world while passing the time since last update;
             var tickTimer = new Stopwatch();
             tickTimer.Start();
@@ -47,7 +50,7 @@ public class Renderer
                 : 0;
 
             double frameTime = renderTime + timeToWait;
-            Console.WriteLine($" fps: {(1000/frameTime)}/{TargetFps}");
+            Console.WriteLine($"fps: {(1000/frameTime)}/{TargetFps}");
             Console.WriteLine($"Rendered frame in {renderTime} ms");
 
             Thread.Sleep((int)timeToWait);

@@ -5,6 +5,7 @@ public class World {
     public Location[,] Cells { get; private set; }
     public int CellSize { get; private set; }
     public Critter firstCritter { get; private set; }
+    public double timer { get; private set; }
 
     public World(int width, int height) {
         Height = height;
@@ -62,6 +63,10 @@ public class World {
     
 
     public void Update(double dt) {
+        // temp
+        timer += dt;
+        Console.WriteLine("Time (via counting dt)                 " + timer );
+
         // update the world
         // dt is the time in milliseconds since the last update
 
