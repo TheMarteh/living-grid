@@ -18,20 +18,18 @@ public class Renderer
     public void Render() 
     {
         // render the world. Let the program run for exactly 30 seconds
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.Start();
+        Stopwatch gametimer = new Stopwatch();
+        gametimer.Start();
         
         // set the console properties
-        
         // Console.SetWindowSize(Width + 20, Height + 4);
         // Console.SetBufferSize(Width + 20, Height + 4);
         Console.CursorVisible = false;
-        int loopStartTime;
+
         double timeSinceLastUpdate = 0.01; // delen door nul is nooit goed
-        int loopEndTime = stopwatch.Elapsed.Milliseconds;
         Thread.Sleep(10);
 
-        while (stopwatch.Elapsed.TotalSeconds < 30) {
+        while (gametimer.Elapsed.TotalSeconds < 30) {
             // update the world while passing the time since last update;
             var tickTimer = new Stopwatch();
             tickTimer.Start();
@@ -39,21 +37,18 @@ public class Renderer
             World.Update(timeSinceLastUpdate);
 
             // render the world
-            double dt = RenderFrame();
+            double renderTime = RenderFrame();
 
             // calculate how long we need to wait to not go over
             // the target fps
             double targetFrameTime = 1000.0 / TargetFps;
-            double timeToWait = dt < targetFrameTime 
-                ? targetFrameTime - dt
+            double timeToWait = renderTime < targetFrameTime 
+                ? targetFrameTime - renderTime
                 : 0;
 
-            double frameTime = timeToWait + dt;
+            double frameTime = renderTime + timeToWait;
             Console.WriteLine($" fps: {(1000/frameTime)}/{TargetFps}");
-            Console.WriteLine($"Rendered frame in {dt} ms");
-            
-            // update the world
-            World.Update(frameTime);
+            Console.WriteLine($"Rendered frame in {renderTime} ms");
 
             Thread.Sleep((int)timeToWait);
             timeSinceLastUpdate = (tickTimer.ElapsedMilliseconds / 1000);
@@ -63,10 +58,7 @@ public class Renderer
     public double RenderFrame() {
         // renders the world
         // return the time it took to render the frame
-        double dt;
         Stopwatch stopwatch = new Stopwatch();
-
-        // start the stopwatch
         stopwatch.Start();
 
         // render the world while overwriting the previous frame char by char,
