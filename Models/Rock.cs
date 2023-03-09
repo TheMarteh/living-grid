@@ -18,4 +18,8 @@ public class Rock : Entity
         if (isLarge) return '0';
         return 'o';
     }
+
+    public override IEntity discoverEntityOn(IEntity e, Location loc) {
+        return this;
+    }
 }

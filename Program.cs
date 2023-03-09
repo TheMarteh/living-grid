@@ -1,4 +1,6 @@
-﻿// create a new renderer
-Renderer renderer = new Renderer(50, 14, 5);
+﻿Console.Clear();
+
+// create a new renderer
+Renderer renderer = new Renderer(50, 14, 30);
 Thread.Sleep(1000);
 renderer.Render();

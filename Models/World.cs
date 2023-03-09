@@ -103,48 +103,48 @@ public class World {
                 if (loc.Host != null && loc.Host is IMovable) {
                     ((IMovable)loc.Host).Move(dt);
                     if (((IMovable)loc.Host).relativeXPosition > CellSize / 2) {
-                        ((IMovable)loc.Host).relativeXPosition -= CellSize;
-                        if (j < Width - 1) {
+                        if (j < Width -1) {
+                            ((IMovable)loc.Host).relativeXPosition -= CellSize;
                             var newLoc = Cells[j + 1, k].ReceiveEntity(loc.Host);
                             loc.RemoveEntity();
                         }
                         else {
                             // change direction, as the edge has been reached. 
                             // reflect the direction over the x-axis
-                            ((IMovable)loc.Host).Direction = -((IMovable)loc.Host).Direction;
+                            ((IMovable)loc.Host).Direction = (Math.PI * 2) - ((IMovable)loc.Host).Direction;
                         }
                     }
                     else if (((IMovable)loc.Host).relativeXPosition < -CellSize / 2) {
-                        ((IMovable)loc.Host).relativeXPosition += CellSize;
                         if (j > 0) {
+                            ((IMovable)loc.Host).relativeXPosition += CellSize;
                             var newLoc = Cells[j - 1, k].ReceiveEntity(loc.Host);
                             loc.RemoveEntity();
                         }
                         else {
                             // change direction, as the edge has been reached. 
-                            ((IMovable)loc.Host).Direction = -((IMovable)loc.Host).Direction;
+                            ((IMovable)loc.Host).Direction = (Math.PI * 2) - ((IMovable)loc.Host).Direction;
                         }
                     }
                     else if (((IMovable)loc.Host).relativeYPosition > CellSize / 2) {
-                        ((IMovable)loc.Host).relativeYPosition -= CellSize;
                         if (k < Height - 1) {
+                            ((IMovable)loc.Host).relativeYPosition -= CellSize;
                             var newLoc = Cells[j, k + 1].ReceiveEntity(loc.Host);
                             loc.RemoveEntity();
                         }
                         else {
                             // change direction, as the edge has been reached. 
-                            ((IMovable)loc.Host).Direction = -((IMovable)loc.Host).Direction;
+                            ((IMovable)loc.Host).Direction = - ((IMovable)loc.Host).Direction;
                         }
                     }
                     else if (((IMovable)loc.Host).relativeYPosition < -CellSize / 2) {
-                        ((IMovable)loc.Host).relativeYPosition += CellSize;
                         if (k > 0) {
+                            ((IMovable)loc.Host).relativeYPosition += CellSize;
                             var newLoc = Cells[j, k - 1].ReceiveEntity(loc.Host);
                             loc.RemoveEntity();
                         }
                         else {
                             // change direction, as the edge has been reached. 
-                            ((IMovable)loc.Host).Direction = -((IMovable)loc.Host).Direction;
+                            ((IMovable)loc.Host).Direction = - ((IMovable)loc.Host).Direction;
                         }
                     }
                 }

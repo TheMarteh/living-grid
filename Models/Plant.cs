@@ -42,4 +42,8 @@ public class Plant : Entity {
             Grow();
         }
     }
+
+    public override IEntity discoverEntityOn(IEntity e, Location loc) {
+        return this;
+    }
 }

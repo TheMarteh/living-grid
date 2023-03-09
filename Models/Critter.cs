@@ -19,13 +19,19 @@ public class Critter : Entity, IMovable
     }
     public void Move(double dt)
     {
-        Console.WriteLine("The critter named " + Name + " has moved!");
-        relativeXPosition += (Speed * dt * Math.Cos(Direction));
-        relativeYPosition += (Speed * dt * Math.Sin(Direction));
+        relativeXPosition += (Speed * dt * Math.Cos(Direction % (2 * Math.PI)));
+        relativeYPosition += (Speed * dt * Math.Sin(Direction % (2 + Math.PI)));
     }
 
     public override char Render_Sprite_Char()
     {
         return 'C';
+    }
+
+    public override IEntity discoverEntityOn(IEntity e, Location loc) {
+        if (e is Plant) {
+            return this;
+        }
+        return e;
     }
 }

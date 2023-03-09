@@ -10,10 +10,11 @@ public abstract class Entity : IEntity, ITinySprite
         return ' ';
     }
     public abstract void onSpawn();
+    public abstract IEntity discoverEntityOn(IEntity e, Location loc);
 }
 
 public interface IEntity
 {
-    public string Name { get; set;}
     public void onSpawn();
+    public IEntity discoverEntityOn(IEntity e, Location loc);
 }
