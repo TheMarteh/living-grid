@@ -29,6 +29,8 @@ public class Renderer
         double timeSinceLastUpdate = 0.01; // delen door nul is nooit goed
         Thread.Sleep(10);
 
+        double targetFrameTime = 1000.0 / TargetFps;
+
         while (gametimer.Elapsed.TotalSeconds < 30) {
             // temp
             Console.WriteLine($"Time (via stopwatch):                  {gametimer.Elapsed.TotalMilliseconds}");
@@ -44,7 +46,7 @@ public class Renderer
 
             // calculate how long we need to wait to not go over
             // the target fps
-            double targetFrameTime = 1000.0 / TargetFps;
+            
             double timeToWait = renderTime < targetFrameTime 
                 ? targetFrameTime - renderTime
                 : 0;

@@ -34,4 +34,9 @@ public class Critter : Entity, IMovable
         }
         return e;
     }
+
+    public override void PerformAction(double dt)
+    {
+        Move(dt);
+    }
 }

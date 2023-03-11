@@ -22,4 +22,8 @@ public class Rock : Entity
     public override IEntity discoverEntityOn(IEntity e, Location loc) {
         return this;
     }
+
+    public override void PerformAction(double dt) {
+        // do nothing
+    }
 }

@@ -52,8 +52,8 @@ public class World {
         }
 
         // spawn the first critter
-        int critterx = random.Next(0, Width);
-        int crittery = random.Next(0, Height);
+        int critterx = 3;
+        int crittery = 3;
         var critterLocation = Cells[critterx, crittery];
         var critter = new Critter($"FirstCritter", 13);
         this.Entities.Add(critter);
@@ -77,17 +77,19 @@ public class World {
         // dt variable tells us the time delta since last update, so we can use that to 
         // add simulation behaviour
         
-        Random random = new Random();
-        int x = random.Next(0, Width);
-        int y = random.Next(0, Height);
-        var location = Cells[x, y];
-        if (location.Host != null && location.Host is Plant) {
-            var plant = (Plant)location.Host;
-            plant.Grow();
-        }
+        // Random random = new Random();
+        // int x = random.Next(0, Width);
+        // int y = random.Next(0, Height);
+        // var location = Cells[x, y];
+        // if (location.Host != null && location.Host is Plant) {
+        //     var plant = (Plant)location.Host;
+        //     plant.Grow();
+        // }
         
         // Do this instead:
-        // firstCritter.Move(dt);
+        foreach (var entity in Entities) {
+            entity.PerformAction(dt);
+        }
 
         // let all movable entities move
         // for each location in the world
@@ -101,7 +103,7 @@ public class World {
             for (int k = 0; k < Height; k++) {
                 var loc = Cells[j, k];
                 if (loc.Host != null && loc.Host is IMovable) {
-                    ((IMovable)loc.Host).Move(dt);
+                    // ((IMovable)loc.Host).Move(dt);
                     if (((IMovable)loc.Host).relativeXPosition > CellSize / 2) {
                         if (j < Width -1) {
                             ((IMovable)loc.Host).relativeXPosition -= CellSize;
@@ -111,7 +113,7 @@ public class World {
                         else {
                             // change direction, as the edge has been reached. 
                             // reflect the direction over the x-axis
-                            ((IMovable)loc.Host).Direction = (Math.PI * 2) - ((IMovable)loc.Host).Direction;
+                            ((IMovable)loc.Host).Direction = (Math.PI) - ((IMovable)loc.Host).Direction;
                         }
                     }
                     else if (((IMovable)loc.Host).relativeXPosition < -CellSize / 2) {
@@ -122,7 +124,7 @@ public class World {
                         }
                         else {
                             // change direction, as the edge has been reached. 
-                            ((IMovable)loc.Host).Direction = (Math.PI * 2) - ((IMovable)loc.Host).Direction;
+                            ((IMovable)loc.Host).Direction = (Math.PI) - ((IMovable)loc.Host).Direction;
                         }
                     }
                     else if (((IMovable)loc.Host).relativeYPosition > CellSize / 2) {
