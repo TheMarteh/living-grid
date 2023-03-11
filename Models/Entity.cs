@@ -1,5 +1,6 @@
 public abstract class Entity : IEntity, ITinySprite
 {   public string Name { get; set;}
+    public Location? Location { get; set; }
     public Entity(string name)
     {
         Name = name;
@@ -16,6 +17,7 @@ public abstract class Entity : IEntity, ITinySprite
 
 public interface IEntity
 {
+    public Location? Location { get; set; }
     public void onSpawn();
     public IEntity discoverEntityOn(IEntity e, Location loc);
     public void PerformAction(double dt);

@@ -52,10 +52,10 @@ public class World {
         }
 
         // spawn the first critter
-        int critterx = 3;
-        int crittery = 3;
+        int critterx = new Random().Next(0, Width);
+        int crittery = new Random().Next(0, Height);
         var critterLocation = Cells[critterx, crittery];
-        var critter = new Critter($"FirstCritter", 13);
+        var critter = new Critter($"FirstCritter", 40);
         this.Entities.Add(critter);
         Console.WriteLine("The critter named " + critter.Name + " has spawned!");
         critterLocation.ReceiveEntity(critter);

@@ -29,6 +29,7 @@ public class Location : ITinySprite {
         else {
             Host = entity;
         }
+        Host.Location = this;
         return this;
     }
     public void RemoveEntity() {
