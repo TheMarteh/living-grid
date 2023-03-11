@@ -1,7 +1,9 @@
 public class Location : ITinySprite {
     public IEntity? Host { get; private set; }
-    public Location() {
+    public World World {get; set;}
+    public Location(World world) {
         Host = null;
+        World = world;
     }
     public char Render_Sprite_Char() {
         if (Host is not ITinySprite) {
@@ -34,5 +36,12 @@ public class Location : ITinySprite {
     }
     public void RemoveEntity() {
         Host = null;
+    }
+
+    public void CheckHostPosition() {
+        // check of de relative x en y buiten 
+        // de randen van de tegel zijn
+
+        // World.MoveEntity(this, Host);
     }
 }

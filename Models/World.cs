@@ -15,7 +15,7 @@ public class World {
         CellSize = 8;
         for (int x=0;x<width;x++) {
             for (int y = 0; y< height; y++) {
-                Cells[x,y] = new Location();
+                Cells[x,y] = new Location(this);
             }
         }
     }
@@ -152,6 +152,15 @@ public class World {
                 }
             }
         }
+    }
+
+    public Location MoveEntity(Location oldLoc, Entity e) {
+        // zoek waar de entity heen moet
+
+        // laat de nieuwe locatie het ontvangen
+
+        // temp
+        return oldLoc;
     }
     
 
