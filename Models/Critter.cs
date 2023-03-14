@@ -33,20 +33,23 @@ public class Critter : Entity, IMovable
     public override IEntity discoverEntityOn(IEntity e, Location loc) {
         Host = loc;
         if (e is Plant) {
-            return this;
+            // TODO: Eat plant, but give it back
+            return e;
         }
         if (e is Rock) {
+            // TODO: Die..
             this.IsAlive = false;
             return e;
         }
-        return e;
+        // The occupant is destroyed
+        return null;
     }
 
     public override void PerformAction(double dt)
     {
         if (!IsAlive) return;
         Move(dt);
-        Host.CheckBorderCrossing(relativeXPosition, relativeYPosition);
+        Host.CheckBorderCrossing(this);
     }
 
     public void Bounce()

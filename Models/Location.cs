@@ -2,10 +2,12 @@ public class Location : ITinySprite {
     public int X { get; private set; }
     public int Y { get; private set; }
     public int CellSize { get; private set; }
+    public IEntity? Occupant { get; private set; }
     public IEntity? Visitor { get; private set; }
     public World World {get; set;}
     public Location(World world, int x, int y) {
         Visitor = null;
+        Occupant = null;
         World = world;
         X = x;
         Y = y;
@@ -13,57 +15,107 @@ public class Location : ITinySprite {
 
     }
     public char Render_Sprite_Char() {
-        if (Visitor is not ITinySprite) {
+        if (Occupant is not ITinySprite) {
             return ' ';
         } else {
-            return ((ITinySprite)Visitor).Render_Sprite_Char();
+            return ((ITinySprite)Occupant).Render_Sprite_Char();
         }
     }
 
-    public double Update(double dt) {
-        if (Visitor is not IUpdatable) {
-            return dt;
-        } else {
-            return ((IUpdatable)Visitor).Update(dt);
-        }
-    }
+    // public double Update(double dt) {
+    //     if (Visitor is not IUpdatable) {
+    //         return dt;
+    //     } else {
+    //         return ((IUpdatable)Visitor).Update(dt);
+    //     }
+    // }
 
     public Location ReceiveEntity(IEntity entity) {
         // presents an entity to the location
-        // if (entity is IMovable)
-        // {
-        //     ((IMovable)entity).relativeXPosition = 0;
-        //     ((IMovable)entity).relativeYPosition = 0;
-        // }
-        
         // if the location is occupied, the incoming entity decides what to do.
 
-        if (this.Visitor != null) {
-            this.Visitor = entity.discoverEntityOn(Visitor, this);
+        if (Visitor is not null) {
+            // De hele locatie zit vol..
+            return this;
+        }
+
+        if (Occupant is null) {
+            Occupant = entity;
+            Occupant.Host = this;
+            return this;
+        }
+
+        else {
+            // the location is occupied
+            // the incoming entity decides what to do
+            Visitor = entity;
+            Visitor.Host = this;
+            var result = Visitor.discoverEntityOn(Occupant, this);
+            if (result is null) {
+                // The occupant is destroyed
+                Occupant = Visitor;
+                Visitor = null;
+            }
+            else {
+                // The occupant is still alive
+                Occupant = result;
+            }
+        }
+
+        return this;
+
+        // ------
+        if (Occupant == null) {
+            Occupant = entity;
+            Occupant.Host = this;
+            return this;
         }
         else {
-            this.Visitor = entity;
+            // the location is occupied
+            // the incoming entity decides what to do
+            if (Visitor != null) {
+                // De hele locatie zit vol..
+                return this;
+            }
+            Visitor = entity;
+            Visitor.Host = this;
+            var result = Visitor.discoverEntityOn(Occupant, this);
+            if (result is null) {
+                // The occupant is destroyed
+                Occupant = Visitor;
+                Visitor = null;
+            }
+            else {
+                // The occupant is still alive
+                Occupant = result;
+            }
         }
-        this.Visitor.Host = this;
-        // ((IMovable)this.Visitor).relativeXPosition = 0;
-        // ((IMovable)this.Visitor).relativeXPosition = 0;
         return this;
     }
-    public void RemoveEntity() {
-        Visitor = null;
-    }
 
-    public Location CheckBorderCrossing(double relX, double relY) {
+    // public void RemoveEntity() {
+    //     Visitor = null;
+    // }
+
+    public Location CheckBorderCrossing(IMovable e) {
         // check if the critter has crossed a border
         // if so, move it to the next location
-        if (Math.Abs(relX) > CellSize / 2|| Math.Abs(relY) > CellSize / 2 ) {
+        if (Math.Abs(e.relativeXPosition) > CellSize / 2|| Math.Abs(e.relativeYPosition) > CellSize / 2 ) {
             // the critter has crossed a border
 
+
             // als de visitor null is, is hij succesvol weggegeven. Anders moeten we er nog iets mee doen.
-            this.Visitor =  World.MoveEntity(this, Visitor as Entity);
-            if (Visitor is not null) {
-                ((IMovable)Visitor).Bounce();
-                return this;
+            var result =  World.MoveEntity(this, e);
+            if (result is not null) {
+                e.Bounce();
+            }
+
+            if (Occupant == e) {
+                Occupant = result;
+            }
+
+            if (Visitor == e) {
+                Visitor = result;
             }
             return null;
         }

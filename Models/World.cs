@@ -93,39 +93,39 @@ public class World {
 
     }
 
-    public Entity MoveEntity(Location oldLoc, Entity e) {
+    public Entity MoveEntity(Location oldLoc, IMovable e) {
         // zoek waar de entity heen moet
 
         int newLocX = oldLoc.X;
         int newLocY = oldLoc.Y;
 
-        if (((IMovable)e).relativeXPosition - CellSize / 2 > 0) {
-            ((IMovable)e).relativeXPosition =1 - CellSize / 2;
+        if (e.relativeXPosition - CellSize / 2 > 0) {
+            e.relativeXPosition =1 - CellSize / 2;
             newLocX++;
         }
-        if (((IMovable)e).relativeXPosition + CellSize / 2 < 0) {
-            ((IMovable)e).relativeXPosition= CellSize / 2 - 1;
+        if (e.relativeXPosition + CellSize / 2 < 0) {
+            e.relativeXPosition= CellSize / 2 - 1;
             newLocX--;
         }
 
-        if (((IMovable)e).relativeYPosition - CellSize / 2 > 0) {
-            ((IMovable)e).relativeYPosition = 1 - CellSize / 2;
+        if (e.relativeYPosition - CellSize / 2 > 0) {
+            e.relativeYPosition = 1 - CellSize / 2;
             newLocY++;
         }
-        if (((IMovable)e).relativeYPosition + CellSize / 2 < 0) {
-            ((IMovable)e).relativeYPosition = CellSize / 2 - 1;
+        if (e.relativeYPosition + CellSize / 2 < 0) {
+            e.relativeYPosition = CellSize / 2 - 1;
             newLocY--;
         }
 
         if (newLocX < 0  || newLocX >= Width || newLocY < 0 || newLocY >= Height) {
             // de nieuwe locatie is buiten de wereld, we geven de entity terug zodat de locatie
             // weet dat hij hem niet heeft weg kunnen geven
-            return e;
+            return e as Entity;
         }
 
         // verplaats de entity naar de nieuwe locatie
         var newLoc = Cells[newLocX, newLocY];
-        var entity = newLoc.ReceiveEntity(e);
+        var entity = newLoc.ReceiveEntity(e as IEntity);
         
         // todo, checken wat te doen met een teruggegeven entity
         return null;
