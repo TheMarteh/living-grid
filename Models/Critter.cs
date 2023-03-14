@@ -43,6 +43,7 @@ public class Critter : Entity, IMovable
         if (e is Rock) {
             // TODO: Die..
             this.IsAlive = false;
+            Host.BuryEntity(this);
             return e;
         }
         // The occupant is destroyed

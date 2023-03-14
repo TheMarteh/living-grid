@@ -41,17 +41,17 @@ public class World {
         }
 
         // spawn a few rocks
-        // for (int i = 0; i < 5; i++ ) {
-        //     // get a random location
-        //     int x = random.Next(0, Width);
-        //     int y = random.Next(0, Height);
-        //     var location = Cells[x, y];
+        for (int i = 0; i < 5; i++ ) {
+            // get a random location
+            int x = random.Next(0, Width);
+            int y = random.Next(0, Height);
+            var location = Cells[x, y];
 
-        //     // put the rock on
-        //     var rock = new Rock($"stonehenge_{i}");
-        //     this.Entities.Add((Entity)rock as Entity);
-        //     location.ReceiveEntity(rock);
-        // }
+            // put the rock on
+            var rock = new Rock($"stonehenge_{i}");
+            this.Entities.Add((Entity)rock as Entity);
+            location.ReceiveEntity(rock);
+        }
 
         
         // spawn some critters
@@ -92,16 +92,15 @@ public class World {
         // }
         
         // Do this instead:
-        bool EveryOneIsDead = false;
+        bool SomeAreStillAlive = false;
         foreach (var entity in Entities) {
             if (entity.IsAlive) {
                 entity.PerformAction(dt);
-                EveryOneIsDead = true;
+                if (entity is Critter) SomeAreStillAlive = true;
             }
         }
 
-
-        return EveryOneIsDead;
+        return SomeAreStillAlive;
     }
 
     public Entity MoveEntity(Location oldLoc, IMovable e) {
