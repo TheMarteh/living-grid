@@ -20,7 +20,7 @@ public class Critter : Entity, IMovable
         relativeXPosition = 0;
         relativeYPosition = 0;
         double randomDirection = new Random().NextDouble() * 2 * Math.PI;
-        Direction = randomDirection;
+        Direction = 0; // randomDirection;
     }
     public void Move(double dt)
     {
@@ -38,7 +38,7 @@ public class Critter : Entity, IMovable
         if (e is Plant) {
             // TODO: Eat plant, but give it back
             EatPlant(e as Plant);
-            return e.IsAlive ? e : null;
+            return e;
         }
         if (e is Rock) {
             // TODO: Die..

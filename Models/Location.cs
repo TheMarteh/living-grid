@@ -17,14 +17,13 @@ public class Location : ITinySprite {
 
     }
     public char Render_Sprite_Char() {
-        if (Occupant is not ITinySprite) {
-            return ' ';
-        } else {
-            if (Visitor == null) {
-                return ((ITinySprite)Occupant).Render_Sprite_Char();
-            }
-            return ((ITinySprite)Visitor).Render_Sprite_Char();
+        if (Visitor is ITinySprite) {
+            return ((ITinySprite)Visitor).Render_Sprite_Char(); 
         }
+        if (Occupant is ITinySprite) {
+            return ((ITinySprite)Occupant).Render_Sprite_Char();
+        }
+        return ' ';    
     }
 
     // public double Update(double dt) {
@@ -74,10 +73,6 @@ public class Location : ITinySprite {
         if (Occupant == e) {
             Graveyard.Add(Occupant);
             Occupant = null;
-            if (Visitor is not null) {
-                Occupant = Visitor;
-                Visitor = null;
-            }
         }
         if (Visitor == e) {
             Graveyard.Add(Visitor);
