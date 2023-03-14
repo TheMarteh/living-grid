@@ -1,12 +1,16 @@
 public class Plant : Entity {
     public int Height { get; private set; }
     public double Age { get; private set; }
-    public double GrowthRate { get; private set; }
+    public double NextStageAt { get; private set; }
+    public double GrowthRate { get; private set;}
+    public int MaxHeight { get; private set; }
     public double EnergyGivenPerPick { get; private set;}
     public int HeightCostPerPick { get; private set;}
-    public Plant(string name) : base(name) { 
+    public Plant(string name, double growthRate = 1.0) : base(name) { 
         HeightCostPerPick = 2;
         IsAlive = true;
+        MaxHeight = 5;
+        GrowthRate = growthRate;
     }
     public void Grow() {
         // Grow the plant
@@ -19,21 +23,23 @@ public class Plant : Entity {
         // 1: Sprout (,)
         // 2: Seedling (ƫ)
         // 2: Plant (Ʈ)
-
         if (this.Height == 0) {
+            return ' ';
+        }
+        else if (this.Height == 1) {
             return '.';
         } 
-        else if (this.Height == 1) {
+        else if (this.Height == 2) {
             return ',';
         } 
-        else if (this.Height == 2) {
+        else if (this.Height == 3) {
             return 'ɂ';
         } 
-        else if (this.Height == 3) {
+        else if (this.Height == 4) {
             return 'Y';
         } 
         else {
-            return 'Ȳ';
+            return '♠';
         }
     }
 
@@ -41,7 +47,7 @@ public class Plant : Entity {
         // Plants start at 0 height and age
         this.Height = 0;
         this.Age = 0;
-        GrowthRate = new Random().NextDouble() * 2 + 4;
+        NextStageAt = new Random().NextDouble() * 8.0 * GrowthRate;
 
         // There is a 1/4 chance to spawn as a sprout
         Random random = new Random();
@@ -52,16 +58,18 @@ public class Plant : Entity {
     }
 
     public override IEntity discoverEntityOn(IEntity e, Location loc) {
-        this.Host = loc;
-        return this;
+        if (e is Plant) {
+            GrowthRate = GrowthRate * ((Plant)e).GrowthRate * 0.95;
+        }
+        return null;
     }
 
     public override void PerformAction(double dt) {
         this.Age += dt;
         // A plant grows one stage further every 4-6 seconds
-        if (this.Age > GrowthRate) {
+        if (this.Age > NextStageAt) {
             Grow();
-            GrowthRate += new Random().NextDouble() * 2 + 4;
+            NextStageAt += new Random().NextDouble() * ( 8 * GrowthRate );
         }
     }
 
@@ -74,6 +82,7 @@ public class Plant : Entity {
 
         if (Height == 0) {
             IsAlive = false;
+            Host.BuryEntity(this);
         }
 
         return givenEnergy;

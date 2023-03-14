@@ -31,7 +31,7 @@ public class Renderer
 
         double targetFrameTime = 1000.0 / TargetFps;
 
-        while (gametimer.Elapsed.TotalSeconds < 30) {
+        while (gametimer.Elapsed.TotalSeconds < 60) {
             // temp
             Console.WriteLine($"Time (via stopwatch):                  {gametimer.Elapsed.TotalMilliseconds}");
             

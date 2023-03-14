@@ -26,7 +26,7 @@ public class World {
         Random random = new Random();
 
         // grow a few random plants
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 50; i++) {
             // select a random location
             int x = random.Next(0, Width);
             int y = random.Next(0, Height);

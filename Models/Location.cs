@@ -4,6 +4,7 @@ public class Location : ITinySprite {
     public int CellSize { get; private set; }
     public IEntity? Occupant { get; private set; }
     public IEntity? Visitor { get; private set; }
+    public List<IEntity> Graveyard {get; private set;}
     public World World {get; set;}
     public Location(World world, int x, int y) {
         Visitor = null;
@@ -12,13 +13,17 @@ public class Location : ITinySprite {
         X = x;
         Y = y;
         CellSize = world.CellSize;
+        Graveyard = new List<IEntity>();
 
     }
     public char Render_Sprite_Char() {
         if (Occupant is not ITinySprite) {
             return ' ';
         } else {
-            return ((ITinySprite)Occupant).Render_Sprite_Char();
+            if (Visitor == null) {
+                return ((ITinySprite)Occupant).Render_Sprite_Char();
+            }
+            return ((ITinySprite)Visitor).Render_Sprite_Char();
         }
     }
 
@@ -63,39 +68,22 @@ public class Location : ITinySprite {
         }
 
         return this;
+    }
 
-        // ------
-        if (Occupant == null) {
-            Occupant = entity;
-            Occupant.Host = this;
-            return this;
-        }
-        else {
-            // the location is occupied
-            // the incoming entity decides what to do
-            if (Visitor != null) {
-                // De hele locatie zit vol..
-                return this;
-            }
-            Visitor = entity;
-            Visitor.Host = this;
-            var result = Visitor.discoverEntityOn(Occupant, this);
-            if (result is null) {
-                // The occupant is destroyed
+    public void BuryEntity(IEntity e) {
+        if (Occupant == e) {
+            Graveyard.Add(Occupant);
+            Occupant = null;
+            if (Visitor is not null) {
                 Occupant = Visitor;
                 Visitor = null;
             }
-            else {
-                // The occupant is still alive
-                Occupant = result;
-            }
         }
-        return this;
+        if (Visitor == e) {
+            Graveyard.Add(Visitor);
+            Visitor = null;
+        }
     }
-
-    // public void RemoveEntity() {
-    //     Visitor = null;
-    // }
 
     public Location CheckBorderCrossing(IMovable e) {
         // check if the critter has crossed a border

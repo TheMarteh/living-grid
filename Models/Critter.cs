@@ -38,7 +38,7 @@ public class Critter : Entity, IMovable
         if (e is Plant) {
             // TODO: Eat plant, but give it back
             EatPlant(e as Plant);
-            return e;
+            return e.IsAlive ? e : null;
         }
         if (e is Rock) {
             // TODO: Die..
