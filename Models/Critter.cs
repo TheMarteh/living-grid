@@ -4,13 +4,16 @@ public class Critter : Entity, IMovable
     public double relativeXPosition { get; set; }
     public double relativeYPosition { get; set; }
     public double Direction { get; set; }
-    public bool IsAlive { get; set; }
+    public double Energy { get; private set;}
+    public double EnergyCostMultiplier { get; private set;}
 
     public Critter(string name, int speed) : base(name)
     {
         Speed = speed;
         Host = null;
         IsAlive = true;
+        Energy = 20.0;
+        EnergyCostMultiplier = 1.0;
     }
     public override void onSpawn()
     {
@@ -34,6 +37,7 @@ public class Critter : Entity, IMovable
         Host = loc;
         if (e is Plant) {
             // TODO: Eat plant, but give it back
+            EatPlant(e as Plant);
             return e;
         }
         if (e is Rock) {
@@ -57,5 +61,10 @@ public class Critter : Entity, IMovable
         Direction = new Random().NextDouble() * 2 * Math.PI;
         relativeXPosition = 0;
         relativeYPosition = 0;
+    }
+
+    private void EatPlant(Plant p) {
+        var gainedEnergy = p.GetEaten();
+        Energy += gainedEnergy;
     }
 }

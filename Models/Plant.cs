@@ -2,7 +2,11 @@ public class Plant : Entity {
     public int Height { get; private set; }
     public double Age { get; private set; }
     public double GrowthRate { get; private set; }
+    public double EnergyGivenPerPick { get; private set;}
+    public int HeightCostPerPick { get; private set;}
     public Plant(string name) : base(name) { 
+        HeightCostPerPick = 2;
+        IsAlive = true;
     }
     public void Grow() {
         // Grow the plant
@@ -59,5 +63,19 @@ public class Plant : Entity {
             Grow();
             GrowthRate += new Random().NextDouble() * 2 + 4;
         }
+    }
+
+    public double GetEaten() {
+        double givenEnergy = 0;
+        if (Height >= HeightCostPerPick) {
+            givenEnergy = EnergyGivenPerPick;
+            Height -= HeightCostPerPick;
+        }
+
+        if (Height == 0) {
+            IsAlive = false;
+        }
+
+        return givenEnergy;
     }
 }

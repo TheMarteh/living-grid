@@ -39,17 +39,17 @@ public class World {
         }
 
         // spawn a few rocks
-        for (int i = 0; i < 5; i++ ) {
-            // get a random location
-            int x = random.Next(0, Width);
-            int y = random.Next(0, Height);
-            var location = Cells[x, y];
+        // for (int i = 0; i < 5; i++ ) {
+        //     // get a random location
+        //     int x = random.Next(0, Width);
+        //     int y = random.Next(0, Height);
+        //     var location = Cells[x, y];
 
-            // put the rock on
-            var rock = new Rock($"stonehenge_{i}");
-            this.Entities.Add((Entity)rock as Entity);
-            location.ReceiveEntity(rock);
-        }
+        //     // put the rock on
+        //     var rock = new Rock($"stonehenge_{i}");
+        //     this.Entities.Add((Entity)rock as Entity);
+        //     location.ReceiveEntity(rock);
+        // }
 
         // spawn the first critter
         int critterx = new Random().Next(0, Width);
@@ -88,7 +88,9 @@ public class World {
         
         // Do this instead:
         foreach (var entity in Entities) {
-            entity.PerformAction(dt);
+            if (entity.IsAlive) {
+                entity.PerformAction(dt);
+            }
         }
 
     }
