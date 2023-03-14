@@ -26,6 +26,11 @@ public class Critter : Entity, IMovable
     {
         relativeXPosition += (Speed * dt * Math.Cos(Direction % (2 * Math.PI)));
         relativeYPosition += (Speed * dt * Math.Sin(Direction % (2 + Math.PI)));
+        Energy -= EnergyCostMultiplier * dt * 1;
+        if (Energy <= 0) {
+            IsAlive = false;
+            Host.BuryEntity(this);
+        }
     }
 
     public override char Render_Sprite_Char()

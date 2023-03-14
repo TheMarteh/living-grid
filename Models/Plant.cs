@@ -6,11 +6,12 @@ public class Plant : Entity {
     public int MaxHeight { get; private set; }
     public double EnergyGivenPerPick { get; private set;}
     public int HeightCostPerPick { get; private set;}
-    public Plant(string name, double growthRate = 1.0) : base(name) { 
+    public Plant(string name, double growthRate = 1.0, double energyGivenPerPick = 1.0) : base(name) { 
         HeightCostPerPick = 2;
         IsAlive = true;
         MaxHeight = 6;
         GrowthRate = growthRate;
+        EnergyGivenPerPick = energyGivenPerPick;
     }
     public void Grow() {
         // Grow the plant
