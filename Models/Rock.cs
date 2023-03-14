@@ -20,6 +20,7 @@ public class Rock : Entity
     }
 
     public override IEntity discoverEntityOn(IEntity e, Location loc) {
+        this.Host = loc;
         return this;
     }
 

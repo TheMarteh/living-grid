@@ -48,7 +48,7 @@ public class Plant : Entity {
     }
 
     public override IEntity discoverEntityOn(IEntity e, Location loc) {
-        this.Location = loc;
+        this.Host = loc;
         return this;
     }
 

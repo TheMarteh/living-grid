@@ -4,4 +4,5 @@ public interface IMovable {
     public double relativeXPosition { get; set; }
     public double relativeYPosition { get; set; }
     public void Move(double dt);
+    public void Bounce();
 }

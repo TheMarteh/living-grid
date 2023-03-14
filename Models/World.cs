@@ -15,7 +15,7 @@ public class World {
         CellSize = 8;
         for (int x=0;x<width;x++) {
             for (int y = 0; y< height; y++) {
-                Cells[x,y] = new Location(this);
+                Cells[x,y] = new Location(this, x, y);
             }
         }
     }
@@ -91,76 +91,46 @@ public class World {
             entity.PerformAction(dt);
         }
 
-        // let all movable entities move
-        // for each location in the world
-        // if the location has an entity
-        // if the entity is movable
-        // move the entity
-        // if the entity has moved to a new location
-        // add the entity to the new location
-        // remove the entity from the old location
-        for (int j = 0; j < Width; j++) {
-            for (int k = 0; k < Height; k++) {
-                var loc = Cells[j, k];
-                if (loc.Host != null && loc.Host is IMovable) {
-                    // ((IMovable)loc.Host).Move(dt);
-                    if (((IMovable)loc.Host).relativeXPosition > CellSize / 2) {
-                        if (j < Width -1) {
-                            ((IMovable)loc.Host).relativeXPosition -= CellSize;
-                            var newLoc = Cells[j + 1, k].ReceiveEntity(loc.Host);
-                            loc.RemoveEntity();
-                        }
-                        else {
-                            // change direction, as the edge has been reached. 
-                            // reflect the direction over the x-axis
-                            ((IMovable)loc.Host).Direction = (Math.PI) - ((IMovable)loc.Host).Direction;
-                        }
-                    }
-                    else if (((IMovable)loc.Host).relativeXPosition < -CellSize / 2) {
-                        if (j > 0) {
-                            ((IMovable)loc.Host).relativeXPosition += CellSize;
-                            var newLoc = Cells[j - 1, k].ReceiveEntity(loc.Host);
-                            loc.RemoveEntity();
-                        }
-                        else {
-                            // change direction, as the edge has been reached. 
-                            ((IMovable)loc.Host).Direction = (Math.PI) - ((IMovable)loc.Host).Direction;
-                        }
-                    }
-                    else if (((IMovable)loc.Host).relativeYPosition > CellSize / 2) {
-                        if (k < Height - 1) {
-                            ((IMovable)loc.Host).relativeYPosition -= CellSize;
-                            var newLoc = Cells[j, k + 1].ReceiveEntity(loc.Host);
-                            loc.RemoveEntity();
-                        }
-                        else {
-                            // change direction, as the edge has been reached. 
-                            ((IMovable)loc.Host).Direction = - ((IMovable)loc.Host).Direction;
-                        }
-                    }
-                    else if (((IMovable)loc.Host).relativeYPosition < -CellSize / 2) {
-                        if (k > 0) {
-                            ((IMovable)loc.Host).relativeYPosition += CellSize;
-                            var newLoc = Cells[j, k - 1].ReceiveEntity(loc.Host);
-                            loc.RemoveEntity();
-                        }
-                        else {
-                            // change direction, as the edge has been reached. 
-                            ((IMovable)loc.Host).Direction = - ((IMovable)loc.Host).Direction;
-                        }
-                    }
-                }
-            }
-        }
     }
 
-    public Location MoveEntity(Location oldLoc, Entity e) {
+    public Entity MoveEntity(Location oldLoc, Entity e) {
         // zoek waar de entity heen moet
 
-        // laat de nieuwe locatie het ontvangen
+        int newLocX = oldLoc.X;
+        int newLocY = oldLoc.Y;
 
-        // temp
-        return oldLoc;
+        if (((IMovable)e).relativeXPosition - CellSize / 2 > 0) {
+            ((IMovable)e).relativeXPosition =1 - CellSize / 2;
+            newLocX++;
+        }
+        if (((IMovable)e).relativeXPosition + CellSize / 2 < 0) {
+            ((IMovable)e).relativeXPosition= CellSize / 2 - 1;
+            newLocX--;
+        }
+
+        if (((IMovable)e).relativeYPosition - CellSize / 2 > 0) {
+            ((IMovable)e).relativeYPosition = 1 - CellSize / 2;
+            newLocY++;
+        }
+        if (((IMovable)e).relativeYPosition + CellSize / 2 < 0) {
+            ((IMovable)e).relativeYPosition = CellSize / 2 - 1;
+            newLocY--;
+        }
+
+        if (newLocX < 0  || newLocX >= Width || newLocY < 0 || newLocY >= Height) {
+            // de nieuwe locatie is buiten de wereld, we geven de entity terug zodat de locatie
+            // weet dat hij hem niet heeft weg kunnen geven
+            return e;
+        }
+
+        // verplaats de entity naar de nieuwe locatie
+        var newLoc = Cells[newLocX, newLocY];
+        var entity = newLoc.ReceiveEntity(e);
+        
+        // todo, checken wat te doen met een teruggegeven entity
+        return null;
+
+
     }
     
 
