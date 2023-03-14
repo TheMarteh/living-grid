@@ -54,27 +54,20 @@ public class World {
         // }
 
         
-        // spawn the first critter
-        int critterx = 3; //new Random().Next(0, Width);
-        int crittery = 3; //new Random().Next(0, Height);
-        var critterLocation = Cells[critterx, crittery];
-        var critter = new Critter($"FirstCritter", 40);
-        this.Entities.Add(critter);
-        Console.WriteLine("The critter named " + critter.Name + " has spawned!");
-        critterLocation.ReceiveEntity(critter);
-
-        // // spawn the first plant
-        // int plantx = 20;
-        // int planty = 3;
-        // var plantLocation = Cells[plantx, planty];
-        // var plant = new Plant("Plant 1");
-        // this.Entities.Add(plant);
-        // plantLocation.ReceiveEntity(plant);
-
+        // spawn some critters
+        for (int i = 0; i < 4; i++) {
+            int critterx = new Random().Next(0, Width);
+            int crittery = new Random().Next(0, Height);
+            var critterLocation = Cells[critterx, crittery];
+            var critter = new Critter($"Critter {i}", 40);
+            this.Entities.Add(critter);
+            Console.WriteLine("The critter named " + critter.Name + " has spawned!");
+            critterLocation.ReceiveEntity(critter);
+        }
     }
     
 
-    public void Update(double dt) {
+    public bool Update(double dt) {
         // temp
         timer += dt;
         Console.WriteLine("Time (via counting dt)                 " + timer );
@@ -99,19 +92,16 @@ public class World {
         // }
         
         // Do this instead:
+        bool EveryOneIsDead = false;
         foreach (var entity in Entities) {
             if (entity.IsAlive) {
                 entity.PerformAction(dt);
+                EveryOneIsDead = true;
             }
         }
 
-        // temp
-        foreach (var location in Cells) {
-            if (location.Graveyard.Count > 0) {
-                Console.WriteLine($"Location {location.X} {location.Y} has something in the graveyard");
-            }
-        }
 
+        return EveryOneIsDead;
     }
 
     public Entity MoveEntity(Location oldLoc, IMovable e) {

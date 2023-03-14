@@ -31,7 +31,9 @@ public class Renderer
 
         double targetFrameTime = 1000.0 / TargetFps;
 
-        while (gametimer.Elapsed.TotalSeconds < 60) {
+        bool running = true;
+
+        while (gametimer.Elapsed.TotalSeconds < 300 && running) {
             // temp
             Console.WriteLine($"Time (via stopwatch):                  {gametimer.Elapsed.TotalMilliseconds}");
             
@@ -39,7 +41,7 @@ public class Renderer
             var tickTimer = new Stopwatch();
             tickTimer.Start();
 
-            World.Update(timeSinceLastUpdate);
+            running = World.Update(timeSinceLastUpdate);
 
             // render the world
             double renderTime = RenderFrame();

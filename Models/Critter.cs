@@ -20,7 +20,7 @@ public class Critter : Entity, IMovable
         relativeXPosition = 0;
         relativeYPosition = 0;
         double randomDirection = new Random().NextDouble() * 2 * Math.PI;
-        Direction = 0; // randomDirection;
+        Direction = randomDirection;
     }
     public void Move(double dt)
     {

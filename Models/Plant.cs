@@ -9,12 +9,12 @@ public class Plant : Entity {
     public Plant(string name, double growthRate = 1.0) : base(name) { 
         HeightCostPerPick = 2;
         IsAlive = true;
-        MaxHeight = 5;
+        MaxHeight = 6;
         GrowthRate = growthRate;
     }
     public void Grow() {
         // Grow the plant
-        this.Height++;
+        if (Height < MaxHeight) this.Height++;
     }
 
     public override char Render_Sprite_Char() {
