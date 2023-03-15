@@ -26,17 +26,14 @@ public class Plant : Entity {
         if (this.Height == 0) {
             return ' ';
         }
-        else if (this.Height == 1) {
+        else if (this.Height <= 2) {
             return '.';
         } 
-        else if (this.Height == 2) {
+        else if (this.Height <= 4) {
             return ',';
         } 
-        else if (this.Height == 3) {
-            return 'ɂ';
-        } 
-        else if (this.Height == 4) {
-            return 'Y';
+        else if (this.Height <= 6) {
+            return '+';
         } 
         else {
             return '♠';

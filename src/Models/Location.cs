@@ -24,7 +24,10 @@ public class Location : ITinySprite {
             return ((ITinySprite)Occupant).Render_Sprite_Char();
         }
         if (Graveyard.Count > 0) {
-            return '†';
+            if (Graveyard.Where(e => e is IMovable).Count() > 0) {
+                return '†';
+            }
+            return '.';
         }
         return ' ';    
     }

@@ -13,7 +13,7 @@ public class Critter : Entity, IMovable
         Host = null;
         IsAlive = true;
         Energy = 30.0;
-        EnergyCostMultiplier = 0.5;
+        EnergyCostMultiplier = 0.7;
     }
     public override void onSpawn()
     {
