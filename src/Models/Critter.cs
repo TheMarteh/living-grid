@@ -13,7 +13,7 @@ public class Critter : Entity, IMovable
         Host = null;
         IsAlive = true;
         Energy = 30.0;
-        EnergyCostMultiplier = 1.0;
+        EnergyCostMultiplier = 0.5;
     }
     public override void onSpawn()
     {
@@ -42,8 +42,9 @@ public class Critter : Entity, IMovable
         Host = loc;
         if (e is Plant) {
             // TODO: Eat plant, but give it back
-            EatPlant(e as Plant);
-            return e;
+            var gainedEnergy = ((Plant)e).GetEaten();
+            Energy += gainedEnergy;
+            return e.IsAlive ? e : null;
         }
         if (e is Rock) {
             // TODO: Die..
@@ -68,10 +69,5 @@ public class Critter : Entity, IMovable
         Direction = new Random().NextDouble() * 2 * Math.PI;
         relativeXPosition = 0;
         relativeYPosition = 0;
-    }
-
-    private void EatPlant(Plant p) {
-        var gainedEnergy = p.GetEaten();
-        Energy += gainedEnergy;
     }
 }

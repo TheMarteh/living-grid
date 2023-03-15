@@ -26,7 +26,6 @@ public class World {
         Random random = new Random();
 
         
-
         // grow a few random plants
         for (int i = 0; i < 70; i++) {
             // select a random location
@@ -64,6 +63,27 @@ public class World {
             Console.WriteLine("The critter named " + critter.Name + " has spawned!");
             critterLocation.ReceiveEntity(critter);
         }
+        
+
+        /* FOR DEBUGGING
+        int critterx = 3;
+        int crittery = 3;
+        var critterLocation = Cells[critterx, crittery];
+        var critter = new Critter($"Critter {1}", 40);
+        critter.Direction = 0;
+        this.Entities.Add(critter);
+        Console.WriteLine("The critter named " + critter.Name + " has spawned!");
+        critterLocation.ReceiveEntity(critter);
+
+        int x = 15;
+        int y = 3;
+        var location = Cells[x,y];
+
+        // plant a seed in that location
+        var seed = new Plant($"gepotte_plant_{1}");
+        this.Entities.Add(seed as Entity);
+        Cells[x,y].ReceiveEntity(seed);
+        */
     }
     
 

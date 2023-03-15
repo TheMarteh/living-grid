@@ -23,6 +23,9 @@ public class Location : ITinySprite {
         if (Occupant is ITinySprite) {
             return ((ITinySprite)Occupant).Render_Sprite_Char();
         }
+        if (Graveyard.Count > 0) {
+            return '†';
+        }
         return ' ';    
     }
 
@@ -72,11 +75,11 @@ public class Location : ITinySprite {
     public void BuryEntity(IEntity e) {
         if (Occupant == e) {
             Graveyard.Add(Occupant);
-            Occupant = null;
+            this.Occupant = null;
         }
         if (Visitor == e) {
             Graveyard.Add(Visitor);
-            Visitor = null;
+            this.Visitor = null;
         }
     }
 
