@@ -4,7 +4,6 @@ public class World {
     public List<IEntity> Entities { get; private set; }
     public Location[,] Cells { get; private set; }
     public int CellSize { get; private set; }
-    public Critter firstCritter { get; private set; }
     public double timer { get; private set; }
 
     public World(int width, int height) {
