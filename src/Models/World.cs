@@ -118,7 +118,7 @@ public class World {
                 if (entity is Critter) SomeAreStillAlive = true;
             }
             if (entity is Critter) {
-                Console.WriteLine("The critter named " + ((Critter)entity).Name + " has " + ((Critter)entity).Energy + " health left.");
+                // Console.WriteLine("The critter named " + ((Critter)entity).Name + " has " + ((Critter)entity).Energy + " health left.");
             }
         }
 
