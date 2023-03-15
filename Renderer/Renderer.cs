@@ -60,6 +60,8 @@ public class Renderer
             Thread.Sleep((int)timeToWait);
             timeSinceLastUpdate = (tickTimer.ElapsedMilliseconds * 0.001);
         }
+
+        ShowEndScreen(gametimer);
     }
 
     public double RenderFrame() {
@@ -79,5 +81,40 @@ public class Renderer
         }
 
         return stopwatch.Elapsed.TotalMilliseconds;
+    }
+
+    public void ShowEndScreen(Stopwatch gametimer) {
+        // show the end screen
+        Console.WriteLine("Game over!");
+        Console.WriteLine($"You survived for {gametimer.Elapsed.TotalSeconds} seconds");
+        int totalAmountOfEntitiesLived = 0;
+        int totalAmountOfPlantsLived = 0;
+        int totalAmountOfRocksLived = 0;
+        int totalAmountOfCrittersLived = 0;
+        // var oldestCritter = World.Entities.Where(e => e is Critter).OrderByDescending(e => e.Age).FirstOrDefault();
+        var oldestCritter = new Critter("temp", 0);
+        foreach (var entity in World.Entities) {
+            totalAmountOfEntitiesLived += 1;
+            if (entity is Plant) {
+                totalAmountOfPlantsLived += 1;
+            } else if (entity is Rock) {
+                totalAmountOfRocksLived += 1;
+            } else if (entity is Critter) {
+                totalAmountOfCrittersLived += 1;
+            }
+            if (entity.Age > oldestCritter.Age && entity is Critter) {
+                oldestCritter = (Critter)entity;
+            }
+        }
+        Console.WriteLine($"You lived with {totalAmountOfEntitiesLived} entities");
+        Console.WriteLine($"You lived with {totalAmountOfPlantsLived} plants");
+        Console.WriteLine($"You lived with {totalAmountOfRocksLived} rocks");
+        Console.WriteLine($"You lived with {totalAmountOfCrittersLived} critters");
+        Console.WriteLine($"The oldest critter was {oldestCritter.Name} and it lived for {oldestCritter.Age} seconds. His stats were:");
+        Console.WriteLine($"- Speed: {oldestCritter.Speed}");
+        Console.WriteLine($"- EnergyCostMultiplier: {oldestCritter.EnergyCostMultiplier}");
+
+        Console.WriteLine("Press any key to exit");
+        Console.ReadKey();
     }
 }

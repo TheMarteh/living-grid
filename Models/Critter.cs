@@ -12,7 +12,7 @@ public class Critter : Entity, IMovable
         Speed = speed;
         Host = null;
         IsAlive = true;
-        Energy = 20.0;
+        Energy = 30.0;
         EnergyCostMultiplier = 1.0;
     }
     public override void onSpawn()
@@ -57,6 +57,7 @@ public class Critter : Entity, IMovable
 
     public override void PerformAction(double dt)
     {
+        Age += dt;
         if (!IsAlive) return;
         Move(dt);
         Host.CheckBorderCrossing(this);

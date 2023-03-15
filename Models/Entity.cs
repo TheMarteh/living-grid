@@ -2,6 +2,8 @@ public abstract class Entity : IEntity, ITinySprite
 {   public string Name { get; set;}
     public Location? Host { get; set; }
     public bool IsAlive { get; set;}
+    public double Age { get; set; }
+
     public Entity(string name)
     {
         Name = name;
@@ -20,6 +22,7 @@ public interface IEntity
 {
     public Location? Host { get; set; }
     public bool IsAlive { get; set;}
+    public double Age { get; set; }
 
     public void onSpawn();
     public IEntity discoverEntityOn(IEntity e, Location loc);

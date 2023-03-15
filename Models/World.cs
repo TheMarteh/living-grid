@@ -41,7 +41,7 @@ public class World {
         }
 
         // spawn a few rocks
-        for (int i = 0; i < 5; i++ ) {
+        for (int i = 0; i < 3; i++ ) {
             // get a random location
             int x = random.Next(0, Width);
             int y = random.Next(0, Height);

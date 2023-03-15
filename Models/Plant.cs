@@ -1,6 +1,5 @@
 public class Plant : Entity {
     public int Height { get; private set; }
-    public double Age { get; private set; }
     public double NextStageAt { get; private set; }
     public double GrowthRate { get; private set;}
     public int MaxHeight { get; private set; }
