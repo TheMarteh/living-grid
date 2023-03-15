@@ -1,4 +1,4 @@
-public interface IMovable {
+public interface IMoving {
     public int Speed { get; set; }
     public double Direction { get; set; }
     public double relativeXPosition { get; set; }

@@ -64,7 +64,7 @@ public class World {
         }
         
 
-        /* FOR DEBUGGING
+        /* // FOR DEBUGGING
         int critterx = 3;
         int crittery = 3;
         var critterLocation = Cells[critterx, crittery];
@@ -125,7 +125,7 @@ public class World {
         return SomeAreStillAlive;
     }
 
-    public Entity MoveEntity(Location oldLoc, IMovable e) {
+    public Entity MoveEntity(Location oldLoc, IMoving e) {
         // zoek waar de entity heen moet
 
         int newLocX = oldLoc.X;

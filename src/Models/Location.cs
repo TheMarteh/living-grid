@@ -24,7 +24,7 @@ public class Location : ITinySprite {
             return ((ITinySprite)Occupant).Render_Sprite_Char();
         }
         if (Graveyard.Count > 0) {
-            if (Graveyard.Where(e => e is IMovable).Count() > 0) {
+            if (Graveyard.Where(e => e is IMoving).Count() > 0) {
                 return '†';
             }
             return '.';
@@ -43,6 +43,7 @@ public class Location : ITinySprite {
     public Location ReceiveEntity(IEntity entity) {
         // presents an entity to the location
         // if the location is occupied, the incoming entity decides what to do.
+        // returns false if the entity was denied
 
         if (Visitor is not null) {
             // De hele locatie zit vol..
@@ -86,7 +87,7 @@ public class Location : ITinySprite {
         }
     }
 
-    public Location CheckBorderCrossing(IMovable e) {
+    public Location CheckBorderCrossing(IMoving e) {
         // check if the critter has crossed a border
         // if so, move it to the next location
         if (Math.Abs(e.relativeXPosition) > CellSize / 2|| Math.Abs(e.relativeYPosition) > CellSize / 2 ) {

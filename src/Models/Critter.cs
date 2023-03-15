@@ -1,4 +1,4 @@
-public class Critter : Entity, IMovable
+public class Critter : Entity, IMoving
 {
     public int Speed { get; set; }
     public double relativeXPosition { get; set; }
@@ -39,6 +39,8 @@ public class Critter : Entity, IMovable
     }
 
     public override IEntity discoverEntityOn(IEntity e, Location loc) {
+        // Discovers an entity and decides what to do with them.
+        // returns the entity, or null if it is destroyed
         Host = loc;
         if (e is Plant) {
             // TODO: Eat plant, but give it back

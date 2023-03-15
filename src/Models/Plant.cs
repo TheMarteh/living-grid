@@ -29,10 +29,10 @@ public class Plant : Entity {
         else if (this.Height <= 2) {
             return '.';
         } 
-        else if (this.Height <= 4) {
+        else if (this.Height <= 3) {
             return ',';
         } 
-        else if (this.Height <= 6) {
+        else if (this.Height <= 5) {
             return '+';
         } 
         else {
