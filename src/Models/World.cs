@@ -28,7 +28,7 @@ public class World {
         
 
         // grow a few random plants
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 70; i++) {
             // select a random location
             int x = random.Next(0, Width);
             int y = random.Next(0, Height);
@@ -97,6 +97,9 @@ public class World {
             if (entity.IsAlive) {
                 entity.PerformAction(dt);
                 if (entity is Critter) SomeAreStillAlive = true;
+            }
+            if (entity is Critter) {
+                Console.WriteLine("The critter named " + ((Critter)entity).Name + " has " + ((Critter)entity).Energy + " health left.");
             }
         }
 
