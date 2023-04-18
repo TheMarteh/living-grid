@@ -106,7 +106,7 @@ public class Renderer
                 oldestCritter = (Critter)entity;
             }
         }
-        for (int i =0; i < totalAmountOfCrittersLived; i++) {
+        for (int i = 0; i < totalAmountOfCrittersLived + 1; i++) {
             Console.WriteLine();
         }
         Console.WriteLine($"You lived with {totalAmountOfEntitiesLived} entities");
