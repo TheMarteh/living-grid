@@ -4,7 +4,7 @@ public class World {
     public List<IEntity> Entities { get; private set; }
     public Location[,] Cells { get; private set; }
     public int CellSize { get; private set; }
-    public double timer { get; private set; }
+    // public double timer { get; private set; }
 
     public World(int width, int height) {
         Height = height;
@@ -26,7 +26,7 @@ public class World {
 
         
         // grow a few random plants
-        for (int i = 0; i < 70; i++) {
+        for (int i = 0; i < 10; i++) {
             // select a random location
             int x = random.Next(0, Width);
             int y = random.Next(0, Height);
@@ -88,8 +88,8 @@ public class World {
 
     public bool Update(double dt) {
         // temp
-        timer += dt;
-        Console.WriteLine("Time (via counting dt)                 " + timer );
+        // timer += dt;
+        // Console.WriteLine("Time (via counting dt)                 " + timer );
 
         // update the world
         // dt is the time in milliseconds since the last update
@@ -118,7 +118,7 @@ public class World {
                 if (entity is Critter) SomeAreStillAlive = true;
             }
             if (entity is Critter) {
-                // Console.WriteLine("The critter named " + ((Critter)entity).Name + " has " + ((Critter)entity).Energy + " health left.");
+                Console.WriteLine("The critter named " + ((Critter)entity).Name + " State: " + ((Critter)entity).DeathBy);
             }
         }
 
@@ -126,6 +126,7 @@ public class World {
     }
 
     public Entity MoveEntity(Location oldLoc, IMoving e) {
+        // moves an entity from its old location to a new one
         // zoek waar de entity heen moet
 
         int newLocX = oldLoc.X;

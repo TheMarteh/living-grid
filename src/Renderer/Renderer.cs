@@ -26,7 +26,7 @@ public class Renderer
         // Console.SetBufferSize(Width + 20, Height + 4);
         Console.CursorVisible = false;
 
-        double timeSinceLastUpdate = 0.01; // delen door nul is nooit goed
+        double timeSinceLastUpdate = 0.0001; // delen door nul is nooit goed
         Thread.Sleep(10);
 
         double targetFrameTime = 1000.0 / TargetFps;
@@ -85,8 +85,8 @@ public class Renderer
 
     public void ShowEndScreen(Stopwatch gametimer) {
         // show the end screen
-        Console.WriteLine("Game over!");
-        Console.WriteLine($"You survived for {gametimer.Elapsed.TotalSeconds} seconds");
+        // Console.WriteLine("Game over!");
+        // Console.WriteLine($"You survived for {gametimer.Elapsed.TotalSeconds} seconds");
         int totalAmountOfEntitiesLived = 0;
         int totalAmountOfPlantsLived = 0;
         int totalAmountOfRocksLived = 0;
@@ -106,6 +106,9 @@ public class Renderer
                 oldestCritter = (Critter)entity;
             }
         }
+        for (int i =0; i < totalAmountOfCrittersLived; i++) {
+            Console.WriteLine();
+        }
         Console.WriteLine($"You lived with {totalAmountOfEntitiesLived} entities");
         Console.WriteLine($"You lived with {totalAmountOfPlantsLived} plants");
         Console.WriteLine($"You lived with {totalAmountOfRocksLived} rocks");
@@ -113,6 +116,7 @@ public class Renderer
         Console.WriteLine($"The oldest critter was {oldestCritter.Name} and it lived for {oldestCritter.Age} seconds. His stats were:");
         Console.WriteLine($"- Speed: {oldestCritter.Speed}");
         Console.WriteLine($"- EnergyCostMultiplier: {oldestCritter.EnergyCostMultiplier}");
+        Console.WriteLine($"- Died by: {oldestCritter.DeathBy}");
 
         Console.WriteLine("Press any key to exit");
         Console.ReadKey();

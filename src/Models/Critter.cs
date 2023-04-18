@@ -6,6 +6,7 @@ public class Critter : Entity, IMoving
     public double Direction { get; set; }
     public double Energy { get; private set;}
     public double EnergyCostMultiplier { get; private set;}
+    public string DeathBy { get; private set;}
 
     public Critter(string name, int speed) : base(name)
     {
@@ -13,7 +14,7 @@ public class Critter : Entity, IMoving
         Host = null;
         IsAlive = true;
         Energy = 30.0;
-        EnergyCostMultiplier = 0.7;
+        EnergyCostMultiplier = 1.0;
     }
     public override void onSpawn()
     {
@@ -29,6 +30,7 @@ public class Critter : Entity, IMoving
         Energy -= EnergyCostMultiplier * dt * 1;
         if (Energy <= 0) {
             IsAlive = false;
+            DeathBy = "Starved to death";
             Host.BuryEntity(this);
         }
     }
@@ -51,6 +53,7 @@ public class Critter : Entity, IMoving
         if (e is Rock) {
             // TODO: Die..
             this.IsAlive = false;
+            this.DeathBy = "Smashed by a Rock";
             Host.BuryEntity(this);
             return e;
         }
