@@ -57,6 +57,13 @@ public class Critter : Entity, IMoving
             Host.BuryEntity(this);
             return e;
         }
+        if (e is Critter) {
+            // mate
+            if (Energy > 10) {
+                // wacht even en spawn child
+                Energy -=5;
+            }
+        }
         // The occupant is destroyed
         return null;
     }

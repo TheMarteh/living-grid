@@ -26,7 +26,7 @@ public class World {
 
         
         // grow a few random plants
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 30; i++) {
             // select a random location
             int x = random.Next(0, Width);
             int y = random.Next(0, Height);
@@ -53,7 +53,7 @@ public class World {
 
         
         // spawn some critters
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             int critterx = new Random().Next(0, Width);
             int crittery = new Random().Next(0, Height);
             var critterLocation = Cells[critterx, crittery];
@@ -118,7 +118,7 @@ public class World {
                 if (entity is Critter) SomeAreStillAlive = true;
             }
             if (entity is Critter) {
-                Console.WriteLine("The critter named " + ((Critter)entity).Name + " State: " + ((Critter)entity).DeathBy);
+                Console.WriteLine("The critter named " + ((Critter)entity).Name + " Energy: " + ((Critter)entity).Energy+ " State: " + ((Critter)entity).DeathBy);
             }
         }
 
