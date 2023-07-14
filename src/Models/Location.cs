@@ -88,8 +88,8 @@ public class Location : ITinySprite {
     }
 
     public void NotifyBirth(IEntity baby) {
-        this.World.Entities.Add(baby);
         this.ReceiveEntity(baby);
+        if (this.Occupant == baby || this.Visitor == baby) this.World.Entities.Add(baby);
     }
 
     public Location CheckBorderCrossing(IMoving e) {

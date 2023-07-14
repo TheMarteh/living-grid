@@ -39,7 +39,7 @@ public class World {
         }
 
         // spawn a few rocks
-        for (int i = 0; i < 2; i++ ) {
+        for (int i = 0; i < 1; i++ ) {
             // get a random location
             int x = random.Next(0, Width);
             int y = random.Next(0, Height);
@@ -53,7 +53,7 @@ public class World {
 
         
         // spawn some critters
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 12; i++) {
             int critterx = new Random().Next(0, Width);
             int crittery = new Random().Next(0, Height);
             var critterLocation = Cells[critterx, crittery];
