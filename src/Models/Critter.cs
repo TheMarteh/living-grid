@@ -7,6 +7,13 @@ public class Critter : Entity, IMoving
     public double Energy { get; private set;}
     public double EnergyCostMultiplier { get; private set;}
     public string DeathBy { get; private set;}
+    public int carryTime;
+
+
+    // pregnancy
+    private double pregnancyTimer;
+    private bool isPregnant = false;
+    private CritterGenome? baby;
 
     public Critter(string name, int speed) : base(name)
     {
@@ -15,6 +22,7 @@ public class Critter : Entity, IMoving
         IsAlive = true;
         Energy = 30.0;
         EnergyCostMultiplier = 1.0;
+        carryTime = 5;
     }
     public override void onSpawn()
     {
@@ -28,11 +36,6 @@ public class Critter : Entity, IMoving
         relativeXPosition += (Speed * dt * Math.Cos(Direction % (2 * Math.PI)));
         relativeYPosition += (Speed * dt * Math.Sin(Direction % (2 + Math.PI)));
         Energy -= EnergyCostMultiplier * dt * 1;
-        if (Energy <= 0) {
-            IsAlive = false;
-            DeathBy = "Starved to death";
-            Host.BuryEntity(this);
-        }
     }
 
     public override char Render_Sprite_Char()
@@ -59,9 +62,10 @@ public class Critter : Entity, IMoving
         }
         if (e is Critter) {
             // mate
-            if (Energy > 10) {
+            if (Energy > 10 && Age > 10) {
                 // wacht even en spawn child
                 Energy -=5;
+                impregnate((Critter)e);
             }
         }
         // The occupant is destroyed
@@ -72,7 +76,20 @@ public class Critter : Entity, IMoving
     {
         Age += dt;
         if (!IsAlive) return;
+        if (isPregnant) {
+            pregnancyTimer -= dt;
+            if (pregnancyTimer < 0 ) {
+                // bevallen van baby
+                giveBaby();
+            }
+        }
         Move(dt);
+        if (Energy <= 0) {
+            IsAlive = false;
+            DeathBy = "Starved to death";
+            Host.BuryEntity(this);
+            return;
+        }
         Host.CheckBorderCrossing(this);
     }
 
@@ -81,5 +98,29 @@ public class Critter : Entity, IMoving
         Direction = new Random().NextDouble() * 2 * Math.PI;
         relativeXPosition = 0;
         relativeYPosition = 0;
+    }
+
+    public void impregnate(Critter partner) {
+        // TODO: implement
+        CritterGenome babyGenome = new CritterGenome();
+        babyGenome.Speed_a = Speed;
+        babyGenome.EnergyCostMultiplier_a = EnergyCostMultiplier;
+        partner.becomePregnant(babyGenome);
+    }
+
+    public void becomePregnant(CritterGenome babyGenome) {
+        this.isPregnant = true;
+        this.pregnancyTimer = carryTime;
+        babyGenome.Speed_b = this.Speed;
+        babyGenome.EnergyCostMultiplier_b = this.EnergyCostMultiplier;
+        this.baby = babyGenome;
+    }
+
+    public void giveBaby() {
+        Critter baby = new Critter($"baby of {this.Name}", this.Speed);
+        Host.NotifyBirth(baby);
+        this.isPregnant = false;
+        this.pregnancyTimer = carryTime;
+        this.baby = null;
     }
 }

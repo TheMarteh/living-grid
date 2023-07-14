@@ -87,6 +87,11 @@ public class Location : ITinySprite {
         }
     }
 
+    public void NotifyBirth(IEntity baby) {
+        this.World.Entities.Add(baby);
+        this.ReceiveEntity(baby);
+    }
+
     public Location CheckBorderCrossing(IMoving e) {
         // check if the critter has crossed a border
         // if so, move it to the next location

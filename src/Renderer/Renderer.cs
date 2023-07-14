@@ -32,13 +32,13 @@ public class Renderer
         double targetFrameTime = 1000.0 / TargetFps;
 
         bool running = true;
+        var tickTimer = new Stopwatch();
 
+        // stop altijd na 5 minuten
         while (gametimer.Elapsed.TotalSeconds < 300 && running) {
-            // temp
-            Console.WriteLine($"Time (via stopwatch):                  {gametimer.Elapsed.TotalMilliseconds}");
             
             // update the world while passing the time since last update;
-            var tickTimer = new Stopwatch();
+            tickTimer.Reset();
             tickTimer.Start();
 
             running = World.Update(timeSinceLastUpdate);
@@ -54,7 +54,7 @@ public class Renderer
                 : 0;
 
             double frameTime = renderTime + timeToWait;
-            Console.WriteLine($"fps: {(1000/frameTime)}/{TargetFps}");
+            Console.WriteLine($"fps: {(Math.Round(1000/frameTime,2))}/{TargetFps}");
             Console.WriteLine($"Rendered frame in {renderTime} ms");
 
             Thread.Sleep((int)timeToWait);
@@ -73,12 +73,16 @@ public class Renderer
         // render the world while overwriting the previous frame char by char,
         // starting at the top left of the console.
         Console.SetCursorPosition(Console.WindowLeft, Console.WindowTop);
+        Console.WriteLine($"x{String.Concat(Enumerable.Repeat("-", World.Width))}x");
         for (int y = 0; y < World.Height; y++) {
+            Console.Write("|");
             for (int x = 0; x < World.Width; x++) {
                 Console.Write(World.GetLocation(x, y).Render_Sprite_Char());
             }
-            Console.WriteLine();
+            Console.WriteLine("|");
         }
+        Console.WriteLine($"x{String.Concat(Enumerable.Repeat("-", World.Width))}x");
+
 
         return stopwatch.Elapsed.TotalMilliseconds;
     }
@@ -113,7 +117,7 @@ public class Renderer
         Console.WriteLine($"You lived with {totalAmountOfPlantsLived} plants");
         Console.WriteLine($"You lived with {totalAmountOfRocksLived} rocks");
         Console.WriteLine($"You lived with {totalAmountOfCrittersLived} critters");
-        Console.WriteLine($"The oldest critter was {oldestCritter.Name} and it lived for {oldestCritter.Age} seconds. His stats were:");
+        Console.WriteLine($"The oldest critter was {oldestCritter.Name} and it lived for {Math.Round(oldestCritter.Age, 2)} seconds. His stats were:");
         Console.WriteLine($"- Speed: {oldestCritter.Speed}");
         Console.WriteLine($"- EnergyCostMultiplier: {oldestCritter.EnergyCostMultiplier}");
         Console.WriteLine($"- Died by: {oldestCritter.DeathBy}");

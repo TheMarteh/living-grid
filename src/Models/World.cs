@@ -39,7 +39,7 @@ public class World {
         }
 
         // spawn a few rocks
-        for (int i = 0; i < 3; i++ ) {
+        for (int i = 0; i < 2; i++ ) {
             // get a random location
             int x = random.Next(0, Width);
             int y = random.Next(0, Height);
@@ -112,14 +112,16 @@ public class World {
         
         // Do this instead:
         bool SomeAreStillAlive = false;
-        foreach (var entity in Entities) {
-            if (entity.IsAlive) {
-                entity.PerformAction(dt);
-                if (entity is Critter) SomeAreStillAlive = true;
+
+        for (int i = 0; i < Entities.Count; i++) {
+            if (Entities[i].IsAlive) {
+                Entities[i].PerformAction(dt);
+                if (Entities[i] is Critter) SomeAreStillAlive = true;
             }
-            if (entity is Critter) {
-                Console.WriteLine("The critter named " + ((Critter)entity).Name + " Energy: " + ((Critter)entity).Energy+ " State: " + ((Critter)entity).DeathBy);
+            if (Entities[i] is Critter) {
+                Console.WriteLine("The critter named " + ((Critter)Entities[i]).Name + " Energy: " + Math.Round(((Critter)Entities[i]).Energy,2)+ " State: " + ((Critter)Entities[i]).DeathBy);
             }
+
         }
 
         return SomeAreStillAlive;
