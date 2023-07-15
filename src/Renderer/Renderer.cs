@@ -15,16 +15,20 @@ public class Renderer
         World.Populate();
     }
 
-    public void Render() 
+    public void StartOutput(int maxWidth, int maxHeight) 
     {
         // render the world. Let the program run for exactly 30 seconds
         Stopwatch gametimer = new Stopwatch();
         gametimer.Start();
+
+        int amountOfLinesForStats = maxHeight - World.Height - 4;
         
         // set the console properties
         // Console.SetWindowSize(Width + 20, Height + 4);
         // Console.SetBufferSize(Width + 20, Height + 4);
+        Console.Clear();
         Console.CursorVisible = false;
+        Console.Write($"x{String.Concat(Enumerable.Repeat("-", maxWidth))}x\n");
 
         double timeSinceLastUpdate = 0.0001; // delen door nul is nooit goed
         Thread.Sleep(10);
@@ -44,19 +48,25 @@ public class Renderer
             running = World.Update(timeSinceLastUpdate);
 
             // render the world
-            double renderTime = RenderFrame();
+            Console.SetCursorPosition(Console.WindowLeft, Console.WindowTop);
+            string frameAsString = RenderFrame();
+            Console.Write(frameAsString);
+
 
             // calculate how long we need to wait to not go over
             // the target fps
             
-            double timeToWait = renderTime < targetFrameTime 
-                ? targetFrameTime - renderTime
+            double timeToWait = tickTimer.Elapsed.TotalMilliseconds < targetFrameTime 
+                ? targetFrameTime - tickTimer.Elapsed.TotalMilliseconds
                 : 0;
 
-            double frameTime = renderTime + timeToWait;
-            Console.WriteLine($"fps: {(Math.Round(1000/frameTime,2))}/{TargetFps}");
-            Console.WriteLine($"Rendered frame in {renderTime} ms");
+            double frameTime = tickTimer.Elapsed.TotalMilliseconds + timeToWait;
+            // Console.WriteLine($"fps: {(Math.Round(1000/frameTime,2))}/{TargetFps}");
+            // Console.WriteLine($"Rendered frame in {renderTime} ms");
 
+            // render stats
+            string stats = RenderStats(amountOfLinesForStats);
+            Console.Write(stats);
             Thread.Sleep((int)timeToWait);
             timeSinceLastUpdate = (tickTimer.ElapsedMilliseconds * 0.001);
         }
@@ -64,27 +74,38 @@ public class Renderer
         ShowEndScreen(gametimer);
     }
 
-    public double RenderFrame() {
-        // renders the world
-        // return the time it took to render the frame
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.Start();
+    private string RenderStats(int maxLines)
+    {
+        string result = "";
+        int i = 0;
+        
+        foreach (IEntity e in World.Entities) {
+            if (e is Critter && i < maxLines) {
+                    result += ("The critter named " + ((Critter)e).Name + " Energy: " + Math.Round(((Critter)e).Energy,2)+ " State: " + ((Critter)e).DeathBy + "\n");
+                    i++;
+                }
+        }
+        
+        return result;
+    }
 
+    public string RenderFrame() {
+        // renders the world
+        string result = "";
         // render the world while overwriting the previous frame char by char,
         // starting at the top left of the console.
-        Console.SetCursorPosition(Console.WindowLeft, Console.WindowTop);
-        Console.WriteLine($"x{String.Concat(Enumerable.Repeat("-", World.Width))}x");
+        result += $"x{String.Concat(Enumerable.Repeat("-", World.Width))}x\n";
         for (int y = 0; y < World.Height; y++) {
-            Console.Write("|");
+            result += "|";
             for (int x = 0; x < World.Width; x++) {
-                Console.Write(World.GetLocation(x, y).Render_Sprite_Char());
+                result += World.GetLocation(x, y).Render_Sprite_Char();
             }
-            Console.WriteLine("|");
+            result += "|\n";
         }
-        Console.WriteLine($"x{String.Concat(Enumerable.Repeat("-", World.Width))}x");
+        result += $"x{String.Concat(Enumerable.Repeat("-", World.Width))}x\n";
 
 
-        return stopwatch.Elapsed.TotalMilliseconds;
+        return result;
     }
 
     public void ShowEndScreen(Stopwatch gametimer) {
@@ -110,17 +131,20 @@ public class Renderer
                 oldestCritter = (Critter)entity;
             }
         }
-        for (int i = 0; i < totalAmountOfCrittersLived + 1; i++) {
-            Console.WriteLine();
-        }
-        Console.WriteLine($"You lived with {totalAmountOfEntitiesLived} entities");
-        Console.WriteLine($"You lived with {totalAmountOfPlantsLived} plants");
-        Console.WriteLine($"You lived with {totalAmountOfRocksLived} rocks");
+        
+        Console.SetCursorPosition(Console.WindowLeft, Console.WindowTop);
+        Console.Write(RenderFrame());
+        Console.WriteLine($"You lived with {totalAmountOfEntitiesLived} entities                                            ");
+        // for (int i = 0; i < totalAmountOfCrittersLived + 1; i++) {
+        //     Console.WriteLine();
+        // }
+        Console.WriteLine($"You lived with {totalAmountOfPlantsLived} plants                                                ");
+        Console.WriteLine($"You lived with {totalAmountOfRocksLived} rocks                                                  ");
         Console.WriteLine($"You lived with {totalAmountOfCrittersLived} critters");
         Console.WriteLine($"The oldest critter was {oldestCritter.Name} and it lived for {Math.Round(oldestCritter.Age, 2)} seconds. His stats were:");
-        Console.WriteLine($"- Speed: {oldestCritter.Speed}");
-        Console.WriteLine($"- EnergyCostMultiplier: {oldestCritter.EnergyCostMultiplier}");
-        Console.WriteLine($"- Died by: {oldestCritter.DeathBy}");
+        Console.WriteLine($"- Speed: {oldestCritter.Speed}                                                                  ");
+        Console.WriteLine($"- EnergyCostMultiplier: {oldestCritter.EnergyCostMultiplier}                                       ");
+        Console.WriteLine($"- Died by: {oldestCritter.DeathBy}                                                             ");
 
         Console.WriteLine("Press any key to exit");
         Console.ReadKey();

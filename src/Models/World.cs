@@ -53,7 +53,7 @@ public class World {
 
         
         // spawn some critters
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 8; i++) {
             int critterx = new Random().Next(0, Width);
             int crittery = new Random().Next(0, Height);
             var critterLocation = Cells[critterx, crittery];
@@ -118,10 +118,6 @@ public class World {
                 Entities[i].PerformAction(dt);
                 if (Entities[i] is Critter) SomeAreStillAlive = true;
             }
-            if (Entities[i] is Critter) {
-                Console.WriteLine("The critter named " + ((Critter)Entities[i]).Name + " Energy: " + Math.Round(((Critter)Entities[i]).Energy,2)+ " State: " + ((Critter)Entities[i]).DeathBy);
-            }
-
         }
 
         return SomeAreStillAlive;

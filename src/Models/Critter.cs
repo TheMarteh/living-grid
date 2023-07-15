@@ -21,7 +21,7 @@ public class Critter : Entity, IMoving
         Host = null;
         IsAlive = true;
         Energy = 30.0;
-        EnergyCostMultiplier = 0.7;
+        EnergyCostMultiplier = 1.5;
         carryTime = 5;
     }
     public override void onSpawn()
